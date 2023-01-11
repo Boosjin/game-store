@@ -16,7 +16,7 @@
     <artifactId>game-store</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Game Store</name>
-    <description>Buying And Selling Video Game</description>
+    <description>Buying And Selling Video Games</description>
 
     <properties>
         <java.version>17</java.version>
