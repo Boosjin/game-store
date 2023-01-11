@@ -30,4 +30,9 @@ final class VideoGameController {
     private ResponseEntity<?> getVideoGame(@PathVariable String name){
         return videoGameService.getVideoGame(name);
     }
+
+    @PatchMapping("{name}")
+    private ResponseEntity<String> patchVideoGame(@PathVariable String name, @RequestBody VideoGame videoGame){
+        return videoGameService.patchVideoGame(name, videoGame);
+    }
 }

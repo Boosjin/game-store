@@ -49,4 +49,16 @@ class VideoGameService {
 
         return ResponseEntity.ok(videoGameOptional.get());
     }
+
+    @Transactional
+    ResponseEntity<String> patchVideoGame(String name, VideoGame videoGame) {
+        Optional<VideoGame> videoGameOptional = videoGameRepository.findVideoGamesByName(name);
+        if (videoGameOptional.isEmpty())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No Video Game With This Name Was Found");
+
+        if (videoGame.getPrice() != null) videoGameOptional.get().setPrice(videoGame.getPrice());
+
+        return ResponseEntity.ok("Video Game Updated");
+    }
 }
