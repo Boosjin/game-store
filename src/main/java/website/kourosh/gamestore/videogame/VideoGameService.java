@@ -61,4 +61,17 @@ class VideoGameService {
 
         return ResponseEntity.ok("Video Game Updated");
     }
+
+    @Transactional
+    ResponseEntity<String> deleteVideoGame(String name) {
+        Optional<VideoGame> videoGameOptional = videoGameRepository.findVideoGamesByName(name);
+        if (videoGameOptional.isEmpty())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No Video Game With This Name Was Found");
+
+        videoGameRepository.deleteById(name);
+        return ResponseEntity.ok("Video Game Deleted");
+    }
+
+    // TODO refactor code and remove duplicate code
 }

@@ -35,4 +35,9 @@ final class VideoGameController {
     private ResponseEntity<String> patchVideoGame(@PathVariable String name, @RequestBody VideoGame videoGame){
         return videoGameService.patchVideoGame(name, videoGame);
     }
+
+    @DeleteMapping("{name}")
+    private ResponseEntity<String> deleteVideoGame(@PathVariable String name){
+        return videoGameService.deleteVideoGame(name);
+    }
 }
