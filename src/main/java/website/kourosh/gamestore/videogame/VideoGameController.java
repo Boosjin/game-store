@@ -25,4 +25,9 @@ final class VideoGameController {
     private ResponseEntity<?> getVideoGames(){
         return videoGameService.getVideoGames();
     }
+
+    @GetMapping("{name}")
+    private ResponseEntity<?> getVideoGame(@PathVariable String name){
+        return videoGameService.getVideoGame(name);
+    }
 }

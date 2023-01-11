@@ -39,4 +39,14 @@ class VideoGameService {
 
         return ResponseEntity.ok(videoGames);
     }
+
+    @Transactional
+    ResponseEntity<?> getVideoGame(String name) {
+        Optional<VideoGame> videoGameOptional = videoGameRepository.findVideoGamesByName(name);
+        if (videoGameOptional.isEmpty())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No Video Game With This Name Was Found");
+
+        return ResponseEntity.ok(videoGameOptional.get());
+    }
 }
