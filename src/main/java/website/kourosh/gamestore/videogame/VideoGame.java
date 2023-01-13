@@ -8,6 +8,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.PositiveOrZero;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,7 +17,7 @@ import java.time.LocalDate;
 @Entity
 @Table
 @Getter
-@Setter
+@Setter(AccessLevel.PACKAGE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 final class VideoGame {
 
