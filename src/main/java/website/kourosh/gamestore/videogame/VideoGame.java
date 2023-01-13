@@ -5,9 +5,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.PastOrPresent;
-import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,8 +20,9 @@ import java.time.LocalDate;
 final class VideoGame {
 
     @Id
-    @Column
+    @Column(columnDefinition = "VARCHAR(255)")
     @NotBlank
+    @Size(min = 1, max = 255, message = "Video Game Name Must Be Between 1 And 255 Characters")
     private String name;
 
     @Column
@@ -32,5 +31,7 @@ final class VideoGame {
 
     @Column
     @PositiveOrZero
+    @Min(value = 1, message = "The Minimum Price For A Video Game Is 1 US Dollar")
+    @Max(value = 100, message = "The Maximum Price For A Video Game Is 100 US Dollars")
     private Float price;
 }
