@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 class VideoGameService {
@@ -48,6 +49,27 @@ class VideoGameService {
                     .body("No Video Game With This Name Was Found");
 
         return ResponseEntity.ok(videoGameOptional.get());
+    }
+
+    @Transactional
+    ResponseEntity<?> getVideoGamesByGenre(Set<VideoGame.Genre> genres) {
+        if (genres.size() == 0)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("At Least One Genre Must Be Sent");
+
+        List<VideoGame> videoGames = videoGameRepository.findAll();
+        videoGames = videoGames.stream()
+                .filter(videoGame -> videoGame.getGenres().containsAll(genres))
+                .toList();
+
+        if (videoGames.size() == 0 && genres.size() == 1)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No Video Games With This Genre Were Found");
+        else if (videoGames.size() == 0 && genres.size() > 1)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No Video Games With These Genres Were Found");
+
+        return ResponseEntity.ok(videoGames);
     }
 
     @Transactional

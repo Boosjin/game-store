@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Table
@@ -34,4 +35,11 @@ final class VideoGame {
     @Min(value = 1, message = "The Minimum Price For A Video Game Is 1 US Dollar")
     @Max(value = 100, message = "The Maximum Price For A Video Game Is 100 US Dollars")
     private Float price;
+
+    @Column
+    private Set<Genre> genres;
+
+    enum Genre {
+        ACTION, RPG, HORROR, RACING // TODO add all genres
+    }
 }
