@@ -73,6 +73,27 @@ class VideoGameService {
     }
 
     @Transactional
+    ResponseEntity<?> getVideoGamesByPlatform(Set<VideoGame.Platform> platforms) {
+        if (platforms.size() == 0)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("At Least One Platform Must Be Sent");
+
+        List<VideoGame> videoGames = videoGameRepository.findAll();
+        videoGames = videoGames.stream()
+                .filter(videoGame -> videoGame.getPlatforms().containsAll(platforms))
+                .toList();
+
+        if (videoGames.size() == 0 && platforms.size() == 1)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No Video Games With This Platform Were Found");
+        else if (videoGames.size() == 0 && platforms.size() > 1)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No Video Games With These Platforms Were Found");
+
+        return ResponseEntity.ok(videoGames);
+    }
+
+    @Transactional
     ResponseEntity<String> patchVideoGame(String name, VideoGame videoGame) {
         Optional<VideoGame> videoGameOptional = videoGameRepository.findVideoGamesByName(name);
         if (videoGameOptional.isEmpty())

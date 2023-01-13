@@ -39,7 +39,14 @@ final class VideoGame {
     @Column
     private Set<Genre> genres;
 
+    @Column
+    private Set<Platform> platforms;
+
     enum Genre {
         ACTION, RPG, HORROR, RACING // TODO add all genres
+    }
+
+    enum Platform {
+        PS4, PS5, XBOX_SERIES_X, WINDOWS, MAC, LINUX // TODO add all platforms
     }
 }

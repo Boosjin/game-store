@@ -38,6 +38,11 @@ final class VideoGameController {
         return videoGameService.getVideoGamesByGenre(genres);
     }
 
+    @GetMapping("FindByPlatform")
+    private ResponseEntity<?> getVideoGamesByPlatform(@RequestBody Set<VideoGame.Platform> platforms) {
+        return videoGameService.getVideoGamesByPlatform(platforms);
+    }
+
     @PatchMapping("{name}")
     private ResponseEntity<String> patchVideoGame(@PathVariable String name, @RequestBody VideoGame videoGame) {
         return videoGameService.patchVideoGame(name, videoGame);
