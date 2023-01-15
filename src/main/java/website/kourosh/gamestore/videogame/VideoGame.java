@@ -27,6 +27,7 @@ final class VideoGame {
 
     @Column
     @PastOrPresent
+    @NotNull
     private LocalDate releaseDate;
 
     @Column
@@ -36,13 +37,16 @@ final class VideoGame {
     private Float price;
 
     @Column
+    @NotNull
     private Set<Genre> genres;
 
     @Column
+    @NotNull
     private Set<Platform> platforms;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "videoGameName")
+    @NotNull
     private List<Version> versions;
 
     public void setVersions(List<Version> versions) {
