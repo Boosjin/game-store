@@ -2,6 +2,9 @@
 1 - VideoGame.java
 * This Entity Is For Video Games That Have Been Released Today And Prior To Today
 
+2 - Version.java
+* This Entity Keeps Track Of Different Versions Of A Video Game And The Date They Were Published
+
 
 # BUSINESS RULES
 1 - Updating VideoGame.java Instance
