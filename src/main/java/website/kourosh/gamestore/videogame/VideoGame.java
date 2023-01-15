@@ -1,16 +1,15 @@
 package website.kourosh.gamestore.videogame;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import website.kourosh.gamestore.videogame.version.Version;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -41,6 +40,15 @@ final class VideoGame {
 
     @Column
     private Set<Platform> platforms;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "videoGameName")
+    private List<Version> versions;
+
+    public void setVersions(List<Version> versions) {
+        this.versions = versions;
+        versions.forEach(version -> version.setVideoGameName(this.getName()));
+    }
 
     enum Genre {
         ACTION, RPG, HORROR, RACING // TODO add all genres
