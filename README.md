@@ -1,6 +1,6 @@
 # ABOUT ENTITIES
 1 - VideoGame.java
-* This Entity Is For Video Games That Have Been Release Today And Prior To Today
+* This Entity Is For Video Games That Have Been Released Today And Prior To Today
 
 
 # BUSINESS RULES
