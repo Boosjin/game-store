@@ -12,4 +12,4 @@
 
 2 - Adding A New Video Game
 * Video Game Name Must Be Between 1 And 255 Characters
-* Video Game Price Must Be Between 1 And 100 US Dollars
+* Video Game Price Must Be Between 0 And 100 US Dollars
