@@ -37,16 +37,16 @@ final class VideoGame {
     private Float price;
 
     @Column
-    @NotNull
+    @NotEmpty
     private Set<Genre> genres;
 
     @Column
-    @NotNull
+    @NotEmpty
     private Set<Platform> platforms;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "videoGameName")
-    @NotNull
+    @NotEmpty
     private List<Version> versions;
 
     public void setVersions(List<Version> versions) {
