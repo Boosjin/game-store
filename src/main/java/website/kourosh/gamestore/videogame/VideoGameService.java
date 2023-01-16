@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.TreeSet;
 
 @Service
 class VideoGameService {
@@ -33,6 +34,12 @@ class VideoGameService {
         if (illegalVersionDate)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Versions' Release Date Can Not Be Prior To Video Game's Release Date");
+
+        Set<String> duplicateVersions = new TreeSet<String>();
+        videoGame.getVersions().forEach(version -> duplicateVersions.add(version.getVersion()));
+        if (videoGame.getVersions().size() > duplicateVersions.size())
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Duplicate Versions Are Not Allowed");
 
         videoGameRepository.save(videoGame);
         return ResponseEntity.ok("Video Game Added");
@@ -132,6 +139,13 @@ class VideoGameService {
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                             .body("Versions' Release Date Can Not Be Prior To Video Game's Release Date");
                 }
+
+                Set<String> duplicateVersions = new TreeSet<String>();
+                videoGame.getVersions().forEach(version -> duplicateVersions.add(version.getVersion()));
+                if (videoGame.getVersions().size() > duplicateVersions.size())
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                            .body("Duplicate Versions Are Not Allowed");
+
                 videoGameOptional.get().setVersions(videoGame.getVersions());
             } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
