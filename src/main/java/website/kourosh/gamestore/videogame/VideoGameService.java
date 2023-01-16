@@ -109,6 +109,36 @@ class VideoGameService {
 
         if (videoGame.getPrice() != null) videoGameOptional.get().setPrice(videoGame.getPrice());
 
+        if (videoGame.getGenres() != null)
+            if (videoGame.getGenres().size() > 0)
+                videoGameOptional.get().setGenres(videoGame.getGenres());
+            else
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("You Can Not Send An Empty Array Of Genres");
+
+        if (videoGame.getPlatforms() != null)
+            if (videoGame.getPlatforms().size() > 0)
+                videoGameOptional.get().setPlatforms(videoGame.getPlatforms());
+            else
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("You Can Not Send An Empty Array Of Platforms");
+
+        if (videoGame.getVersions() != null) {
+            if (videoGame.getVersions().size() > 0) {
+                boolean illegalVersionDate = videoGame.getVersions()
+                        .stream()
+                        .anyMatch(version -> version.getReleaseDate().isBefore(videoGameOptional.get().getReleaseDate()));
+                if (illegalVersionDate) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                            .body("Versions' Release Date Can Not Be Prior To Video Game's Release Date");
+                }
+                videoGameOptional.get().setVersions(videoGame.getVersions());
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("You Can Not Send An Empty Array Of Versions");
+            }
+        }
+
         return ResponseEntity.ok("Video Game Updated");
     }
 
