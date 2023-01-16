@@ -32,7 +32,6 @@ final class VideoGame {
 
     @Column
     @PositiveOrZero
-    @Min(value = 1, message = "The Minimum Price For A Video Game Is 1 US Dollar")
     @Max(value = 100, message = "The Maximum Price For A Video Game Is 100 US Dollars")
     private Float price;
 
