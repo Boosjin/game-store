@@ -27,6 +27,13 @@ class VideoGameService {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body("A Video Game With This Name Already Exist");
 
+        boolean illegalVersionDate = videoGame.getVersions()
+                .stream()
+                .anyMatch(version -> version.getReleaseDate().isBefore(videoGame.getReleaseDate()));
+        if (illegalVersionDate)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Versions' Release Date Can Not Be Prior To Video Game's Release Date");
+
         videoGameRepository.save(videoGame);
         return ResponseEntity.ok("Video Game Added");
     }
