@@ -8,6 +8,6 @@ import java.util.Optional;
 @Repository
 interface VideoGameRepository extends JpaRepository<VideoGame, String> {
 
-    Optional<VideoGame> findVideoGamesByName(String name);
+    Optional<VideoGame> findVideoGameByName(String name);
 
 }

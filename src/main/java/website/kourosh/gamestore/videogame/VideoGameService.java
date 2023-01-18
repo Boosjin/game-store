@@ -23,7 +23,7 @@ class VideoGameService {
 
     @Transactional
     ResponseEntity<String> addNewVideoGame(VideoGame videoGame) {
-        Optional<VideoGame> videoGameOptional = videoGameRepository.findVideoGamesByName(videoGame.getName());
+        Optional<VideoGame> videoGameOptional = videoGameRepository.findVideoGameByName(videoGame.getName());
         if (videoGameOptional.isPresent())
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body("A Video Game With This Name Already Exist");
@@ -57,7 +57,7 @@ class VideoGameService {
 
     @Transactional
     ResponseEntity<?> getVideoGame(String name) {
-        Optional<VideoGame> videoGameOptional = videoGameRepository.findVideoGamesByName(name);
+        Optional<VideoGame> videoGameOptional = videoGameRepository.findVideoGameByName(name);
         if (videoGameOptional.isEmpty())
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("No Video Game With This Name Was Found");
@@ -109,7 +109,7 @@ class VideoGameService {
 
     @Transactional
     ResponseEntity<String> patchVideoGame(String name, VideoGame videoGame) {
-        Optional<VideoGame> videoGameOptional = videoGameRepository.findVideoGamesByName(name);
+        Optional<VideoGame> videoGameOptional = videoGameRepository.findVideoGameByName(name);
         if (videoGameOptional.isEmpty())
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("No Video Game With This Name Was Found");
@@ -158,7 +158,7 @@ class VideoGameService {
 
     @Transactional
     ResponseEntity<String> deleteVideoGame(String name) {
-        Optional<VideoGame> videoGameOptional = videoGameRepository.findVideoGamesByName(name);
+        Optional<VideoGame> videoGameOptional = videoGameRepository.findVideoGameByName(name);
         if (videoGameOptional.isEmpty())
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("No Video Game With This Name Was Found");
