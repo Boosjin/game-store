@@ -5,7 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import website.kourosh.gamestore.videogame.version.Version;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -15,10 +17,20 @@ import java.util.TreeSet;
 class VideoGameService {
 
     private final VideoGameRepository videoGameRepository;
+    private final ResponseEntity<String> videoGameWasNotFound = ResponseEntity.status(HttpStatus.NOT_FOUND)
+            .body("No Video Game With This Name Was Found");
+    private final ResponseEntity<String> illegalVersionDate = ResponseEntity.status(HttpStatus.BAD_REQUEST)
+            .body("Versions' Release Date Can Not Be Prior To Video Game's Release Date");
 
     @Autowired
     VideoGameService(VideoGameRepository videoGameRepository) {
         this.videoGameRepository = videoGameRepository;
+    }
+
+    private boolean illegalVersionDateChecker(List<Version> versions, LocalDate videoGameReleaseDate) {
+        return versions
+                .stream()
+                .anyMatch(version -> version.getReleaseDate().isBefore(videoGameReleaseDate));
     }
 
     @Transactional
@@ -28,12 +40,7 @@ class VideoGameService {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body("A Video Game With This Name Already Exist");
 
-        boolean illegalVersionDate = videoGame.getVersions()
-                .stream()
-                .anyMatch(version -> version.getReleaseDate().isBefore(videoGame.getReleaseDate()));
-        if (illegalVersionDate)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Versions' Release Date Can Not Be Prior To Video Game's Release Date");
+        if (illegalVersionDateChecker(videoGame.getVersions(), videoGame.getReleaseDate())) return illegalVersionDate;
 
         Set<String> duplicateVersions = new TreeSet<String>();
         videoGame.getVersions().forEach(version -> duplicateVersions.add(version.getVersion()));
@@ -58,9 +65,7 @@ class VideoGameService {
     @Transactional
     ResponseEntity<?> getVideoGame(String name) {
         Optional<VideoGame> videoGameOptional = videoGameRepository.findVideoGameByName(name);
-        if (videoGameOptional.isEmpty())
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("No Video Game With This Name Was Found");
+        if (videoGameOptional.isEmpty()) return videoGameWasNotFound;
 
         return ResponseEntity.ok(videoGameOptional.get());
     }
@@ -110,9 +115,7 @@ class VideoGameService {
     @Transactional
     ResponseEntity<String> patchVideoGame(String name, VideoGame videoGame) {
         Optional<VideoGame> videoGameOptional = videoGameRepository.findVideoGameByName(name);
-        if (videoGameOptional.isEmpty())
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("No Video Game With This Name Was Found");
+        if (videoGameOptional.isEmpty()) return videoGameWasNotFound;
 
         if (videoGame.getPrice() != null) videoGameOptional.get().setPrice(videoGame.getPrice());
 
@@ -132,13 +135,7 @@ class VideoGameService {
 
         if (videoGame.getVersions() != null) {
             if (videoGame.getVersions().size() > 0) {
-                boolean illegalVersionDate = videoGame.getVersions()
-                        .stream()
-                        .anyMatch(version -> version.getReleaseDate().isBefore(videoGameOptional.get().getReleaseDate()));
-                if (illegalVersionDate) {
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                            .body("Versions' Release Date Can Not Be Prior To Video Game's Release Date");
-                }
+                if (illegalVersionDateChecker(videoGame.getVersions(), videoGameOptional.get().getReleaseDate())) return illegalVersionDate;
 
                 Set<String> duplicateVersions = new TreeSet<String>();
                 videoGame.getVersions().forEach(version -> duplicateVersions.add(version.getVersion()));
@@ -159,9 +156,7 @@ class VideoGameService {
     @Transactional
     ResponseEntity<String> deleteVideoGame(String name) {
         Optional<VideoGame> videoGameOptional = videoGameRepository.findVideoGameByName(name);
-        if (videoGameOptional.isEmpty())
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("No Video Game With This Name Was Found");
+        if (videoGameOptional.isEmpty()) return videoGameWasNotFound;
 
         videoGameRepository.deleteById(name);
         return ResponseEntity.ok("Video Game Deleted");
