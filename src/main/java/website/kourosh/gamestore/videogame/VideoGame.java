@@ -21,31 +21,31 @@ final class VideoGame {
 
     @Id
     @Column(columnDefinition = "VARCHAR(255)")
-    @NotBlank
+    @NotBlank(message = "Id Can Not Be Blank")
     @Size(min = 1, max = 255, message = "Video Game Name Must Be Between 1 And 255 Characters")
     private String name;
 
     @Column
-    @PastOrPresent
-    @NotNull
+    @PastOrPresent(message = "Video Game's Release Date Can Not Be In Future")
+    @NotNull(message = "Video Game's Release Date Can Not Be Null")
     private LocalDate releaseDate;
 
     @Column
-    @PositiveOrZero
+    @PositiveOrZero(message = "Video Game's Price Can Not Be A Negative Value")
     @Max(value = 100, message = "The Maximum Price For A Video Game Is 100 US Dollars")
     private Float price;
 
     @Column
-    @NotEmpty
+    @NotEmpty(message = "Genres Collection Can Not Be Empty")
     private Set<Genre> genres;
 
     @Column
-    @NotEmpty
+    @NotEmpty(message = "Platforms Collection Can Not Be Empty")
     private Set<Platform> platforms;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "videoGameName")
-    @NotEmpty
+    @NotEmpty(message = "Versions Collection Can Not Be Empty")
     private List<Version> versions;
 
     public void setVersions(List<Version> versions) {

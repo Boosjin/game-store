@@ -23,11 +23,11 @@ public final class Version {
     private String videoGameName;
 
     @Id
-    @NotBlank
+    @NotBlank(message = "Version Can Not Be Blank")
     private String version;
 
     @Column
-    @NotNull
-    @PastOrPresent
+    @NotNull(message = "Version Release Date Can Not Be Null")
+    @PastOrPresent(message = "Version Release Date Can Not Be In Future")
     private LocalDate releaseDate;
 }
