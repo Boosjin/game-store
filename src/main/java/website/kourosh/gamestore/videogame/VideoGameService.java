@@ -34,7 +34,7 @@ class VideoGameService {
     }
 
     @Transactional
-    ResponseEntity<String> addNewVideoGame(VideoGame videoGame) {
+    public ResponseEntity<String> addNewVideoGame(VideoGame videoGame) {
         Optional<VideoGame> videoGameOptional = videoGameRepository.findVideoGameByName(videoGame.getName());
         if (videoGameOptional.isPresent())
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
@@ -53,7 +53,7 @@ class VideoGameService {
     }
 
     @Transactional
-    ResponseEntity<?> getVideoGames() {
+    public ResponseEntity<?> getVideoGames() {
         List<VideoGame> videoGames = videoGameRepository.findAll();
         if (videoGames.size() == 0)
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -63,7 +63,7 @@ class VideoGameService {
     }
 
     @Transactional
-    ResponseEntity<?> getVideoGame(String name) {
+    public ResponseEntity<?> getVideoGame(String name) {
         Optional<VideoGame> videoGameOptional = videoGameRepository.findVideoGameByName(name);
         if (videoGameOptional.isEmpty()) return videoGameWasNotFound;
 
@@ -71,7 +71,7 @@ class VideoGameService {
     }
 
     @Transactional
-    ResponseEntity<?> getVideoGamesByGenre(Set<VideoGame.Genre> genres) {
+    public ResponseEntity<?> getVideoGamesByGenre(Set<VideoGame.Genre> genres) {
         if (genres.size() == 0)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("At Least One Genre Must Be Sent");
@@ -92,7 +92,7 @@ class VideoGameService {
     }
 
     @Transactional
-    ResponseEntity<?> getVideoGamesByPlatform(Set<VideoGame.Platform> platforms) {
+    public ResponseEntity<?> getVideoGamesByPlatform(Set<VideoGame.Platform> platforms) {
         if (platforms.size() == 0)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("At Least One Platform Must Be Sent");
@@ -113,7 +113,7 @@ class VideoGameService {
     }
 
     @Transactional
-    ResponseEntity<String> patchVideoGame(String name, VideoGame videoGame) {
+    public ResponseEntity<String> patchVideoGame(String name, VideoGame videoGame) {
         Optional<VideoGame> videoGameOptional = videoGameRepository.findVideoGameByName(name);
         if (videoGameOptional.isEmpty()) return videoGameWasNotFound;
 
@@ -154,7 +154,7 @@ class VideoGameService {
     }
 
     @Transactional
-    ResponseEntity<String> deleteVideoGame(String name) {
+    public ResponseEntity<String> deleteVideoGame(String name) {
         Optional<VideoGame> videoGameOptional = videoGameRepository.findVideoGameByName(name);
         if (videoGameOptional.isEmpty()) return videoGameWasNotFound;
 
